@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.2.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.21" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Trials.Kevin.Common\Trials.Kevin.Common.csproj" />
+    <ProjectReference Include="..\Trials.Kevin.Contract\Trials.Kevin.Contract.csproj" />
+    <ProjectReference Include="..\Trials.Kevin.IRepository\Trials.Kevin.IRepository.csproj" />
+    <ProjectReference Include="..\Trials.Kevin.IService\Trials.Kevin.IService.csproj" />
+    <ProjectReference Include="..\Trials.Kevin.Model\Trials.Kevin.Model.csproj" />
+    <ProjectReference Include="..\Trials.Kevin.Repository\Trials.Kevin.Repository.csproj" />
+    <ProjectReference Include="..\Trials.Kevin.Service\Trials.Kevin.Service.csproj" />
+  </ItemGroup>
+
+
+</Project>
