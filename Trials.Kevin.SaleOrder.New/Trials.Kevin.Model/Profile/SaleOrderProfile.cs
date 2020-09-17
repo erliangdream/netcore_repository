@@ -13,6 +13,8 @@ namespace Trials.Kevin.Common.Profile
         {
             CreateMap<SaleOrderDto, SaleOrderEntity>();
             CreateMap<SaleOrderDetailDto, SaleOrderDetailEntity>();
+            CreateMap<SaleOrderEntity, SaleOrderDto>();
+            CreateMap<SaleOrderDetailEntity, SaleOrderDetailDto>();
         }
     }
 }

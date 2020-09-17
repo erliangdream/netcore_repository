@@ -40,6 +40,6 @@ namespace Trials.Kevin.Contract.Request.SaleOrder
         public string UpdateUserNo { get; set; }
         public DateTime UpdateTime { get; set; }
 
-        //public ICollection<SaleOrderDetailEntity> SaleOrderDetailEntities { get; set; }
+        public ICollection<SaleOrderDetailDto> SaleOrderDetailEntities { get; set; }
     }
 }

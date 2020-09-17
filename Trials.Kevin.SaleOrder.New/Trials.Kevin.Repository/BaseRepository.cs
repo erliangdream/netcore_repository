@@ -106,11 +106,39 @@ namespace Trials.Kevin.Repository
             return await _dbContext.Set<TSource>().AsNoTracking().FirstOrDefaultAsync(whereLambda, cancellationToken);
         }
 
-        public async Task<int> UpdateAsync(Expression<Func<TSource, bool>> whereLambda, Expression<Func<TSource, TSource>> entity, CancellationToken cancellationToken)
+        public async Task<EntityEntry<TSource>> UpdateAsync(Expression<Func<TSource, bool>> whereLambda, Expression<Func<TSource, TSource>> entity, CancellationToken cancellationToken)
         {
-            int executeCount = await _dbContext.Set<TSource>().Where(whereLambda).UpdateAsync(entity, cancellationToken);
+            //int executeCount = await _dbContext.Set<TSource>().Where(whereLambda).UpdateAsync(entity, cancellationToken);
             //_dbContext.Set<TSource>().Where(whereLambda).UpdateFromQueryAsync
-            return executeCount;
+
+            TSource sourceModel = await _dbContext.Set<TSource>().Where(whereLambda).FirstOrDefaultAsync();
+
+            if (sourceModel == null)
+            {
+                return null;
+            }
+
+            _dbContext.Set<TSource>().Attach(sourceModel);
+
+            var ee = (entity.Body as MemberInitExpression).Bindings;
+
+            //获取表达式对象
+            var lambdaResultObj = entity.Compile()(sourceModel);
+
+            foreach (var item in ee)
+            {
+                //var bb = ((item as MemberAssignment).Expression as ConstantExpression).Value;
+                //获取修改的属性名
+                string propertyName = item.Member.Name;
+
+                sourceModel.GetType().GetProperty(propertyName).SetValue(sourceModel,
+                    lambdaResultObj.GetType().GetProperty(propertyName).GetValue(lambdaResultObj));
+
+                _dbContext.Entry(sourceModel).Property(propertyName).IsModified = true;
+            }
+            var result = _dbContext.Set<TSource>().Update(sourceModel);
+            return result;
+            //return executeCount;
         }
     }
 }

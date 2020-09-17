@@ -35,7 +35,7 @@ namespace Trials.Kevin.IRepository
         /// <param name="whereLambda"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<int> UpdateAsync(Expression<Func<TSource, bool>> whereLambda, Expression<Func<TSource, TSource>> entity, CancellationToken cancellationToken);
+        Task<EntityEntry<TSource>> UpdateAsync(Expression<Func<TSource, bool>> whereLambda, Expression<Func<TSource, TSource>> entity, CancellationToken cancellationToken);
 
 
         /// <summary>
