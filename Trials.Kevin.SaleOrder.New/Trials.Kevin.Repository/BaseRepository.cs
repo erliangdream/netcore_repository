@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Trials.Kevin.IRepository;
 using Z.EntityFramework.Plus;
@@ -21,22 +22,22 @@ namespace Trials.Kevin.Repository
             _dbContext = dbContext;
         }
 
-        public async Task<EntityEntry<TSource>> AddAsync(TSource entity)
+        public async Task<EntityEntry<TSource>> AddAsync(TSource entity, CancellationToken cancellationToken)
         {
-            return await _dbContext.Set<TSource>().AddAsync(entity);
+            return await _dbContext.Set<TSource>().AddAsync(entity, cancellationToken);
         }
 
-        public async ValueTask<int> DeleteAsync(Expression<Func<TSource, bool>> whereLambda)
+        public async ValueTask<int> DeleteAsync(Expression<Func<TSource, bool>> whereLambda, CancellationToken cancellationToken)
         {
-            return await _dbContext.Set<TSource>().Where(whereLambda).DeleteAsync();
+            return await _dbContext.Set<TSource>().Where(whereLambda).DeleteAsync(cancellationToken);
         }
 
-        public async Task<List<TSource>> GetListAsync(Expression<Func<TSource, bool>> whereLambda)
+        public async Task<List<TSource>> GetListAsync(Expression<Func<TSource, bool>> whereLambda, CancellationToken cancellationToken)
         {
-            return await _dbContext.Set<TSource>().Where(whereLambda).ToListAsync();
+            return await _dbContext.Set<TSource>().Where(whereLambda).ToListAsync(cancellationToken);
         }
 
-        public async Task<Tuple<List<TSource>, int>> GetListPageAsync(int pageSize, int pageIndex, Expression<Func<TSource, bool>> whereLambda, Dictionary<string, string> sortFields)
+        public async Task<(List<TSource> entities, int totalCount)> GetListPageAsync(int pageSize, int pageIndex, Expression<Func<TSource, bool>> whereLambda, Dictionary<string, string> sortFields, CancellationToken cancellationToken)
         {
             var total = await _dbContext.Set<TSource>().Where(whereLambda).CountAsync();
             IQueryable<TSource> whereQuery = _dbContext.Set<TSource>().Where(whereLambda);
@@ -82,23 +83,33 @@ namespace Trials.Kevin.Repository
                 index++;
             }
 
-            var list = await whereQuery.Skip(pageSize * (pageIndex - 1))
-                                      .Take(pageSize).ToListAsync();
 
-            return new Tuple<List<TSource>, int>(list, total);
+            if (pageSize == 0 || pageIndex == 0)
+            {
+                var list = await whereQuery.ToListAsync(cancellationToken);
+
+                return (entities: list, totalCount: total);
+            }
+            else
+            {
+                var list = await whereQuery.Skip(pageSize * (pageIndex - 1))
+                         .Take(pageSize).ToListAsync(cancellationToken);
+
+                return (entities: list, totalCount: total);
+            }
         }
 
 
 
-        public async Task<TSource> GetModelAsync(Expression<Func<TSource, bool>> whereLambda)
+        public async Task<TSource> GetModelAsync(Expression<Func<TSource, bool>> whereLambda, CancellationToken cancellationToken)
         {
-            return await _dbContext.Set<TSource>().AsNoTracking().FirstOrDefaultAsync(whereLambda);
+            return await _dbContext.Set<TSource>().AsNoTracking().FirstOrDefaultAsync(whereLambda, cancellationToken);
         }
 
-        public async ValueTask<int> UpdateAsync(Expression<Func<TSource, bool>> whereLambda, Expression<Func<TSource, TSource>> entity)
+        public async Task<int> UpdateAsync(Expression<Func<TSource, bool>> whereLambda, Expression<Func<TSource, TSource>> entity, CancellationToken cancellationToken)
         {
-
-            int executeCount = await _dbContext.Set<TSource>().Where(whereLambda).UpdateAsync(entity);
+            int executeCount = await _dbContext.Set<TSource>().Where(whereLambda).UpdateAsync(entity, cancellationToken);
+            //_dbContext.Set<TSource>().Where(whereLambda).UpdateFromQueryAsync
             return executeCount;
         }
     }

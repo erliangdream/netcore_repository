@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.TestHost;
 using Autofac.Extensions.DependencyInjection;
+using System.Threading;
+using Trials.Kevin.SaleOrder.New.Host;
 
 namespace Trials.Kevin.XUnitOfTest
 {
@@ -26,6 +28,8 @@ namespace Trials.Kevin.XUnitOfTest
                       });
 
                       services.AddAutofac();
+
+                      services.AddTransient<CancellationTokenSource>();
                   })
             .UseStartup<Startup>();
             testServer = new TestServer(webHostBuilder);

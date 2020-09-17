@@ -2,7 +2,7 @@
 
 namespace Trials.Kevin.IService.SaleOrderService
 {
-    public interface ISaleOrderDetailService : IBaseService<SaleOrderDetailEntity>
+    public interface ISaleOrderDetailService : IBaseService
     {
 
     }

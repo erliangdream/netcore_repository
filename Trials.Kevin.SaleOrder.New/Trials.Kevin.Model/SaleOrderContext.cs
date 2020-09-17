@@ -55,6 +55,7 @@ namespace Trials.Kevin.Model
             base.OnModelCreating(modelBuilder);
 
         }
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             foreach (var item in ChangeTracker.Entries().Where(e => e.State == EntityState.Added && typeof(IUserInfo).IsAssignableFrom(e.Entity.GetType())))
@@ -71,6 +72,11 @@ namespace Trials.Kevin.Model
                 ((IUserInfo)item.Entity).UpdateUserNo = _userModel.UserName;
             }
             return base.SaveChangesAsync(cancellationToken);
+        }
+
+        public override int SaveChanges()
+        {
+            return base.SaveChanges();
         }
     }
 }

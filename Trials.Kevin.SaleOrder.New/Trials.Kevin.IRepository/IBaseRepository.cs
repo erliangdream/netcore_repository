@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -18,7 +19,7 @@ namespace Trials.Kevin.IRepository
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<EntityEntry<TSource>> AddAsync(TSource entity);
+        Task<EntityEntry<TSource>> AddAsync(TSource entity, CancellationToken cancellationToken);
 
 
         /// <summary>
@@ -26,7 +27,7 @@ namespace Trials.Kevin.IRepository
         /// </summary>
         /// <param name="whereLambda"></param>
         /// <returns></returns>
-        ValueTask<int> DeleteAsync(Expression<Func<TSource, bool>> whereLambda);
+        ValueTask<int> DeleteAsync(Expression<Func<TSource, bool>> whereLambda, CancellationToken cancellationToken);
 
         /// <summary>
         /// 更新操作
@@ -34,7 +35,7 @@ namespace Trials.Kevin.IRepository
         /// <param name="whereLambda"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        ValueTask<int> UpdateAsync(Expression<Func<TSource, bool>> whereLambda, Expression<Func<TSource, TSource>> entity);
+        Task<int> UpdateAsync(Expression<Func<TSource, bool>> whereLambda, Expression<Func<TSource, TSource>> entity, CancellationToken cancellationToken);
 
 
         /// <summary>
@@ -42,14 +43,14 @@ namespace Trials.Kevin.IRepository
         /// </summary>
         /// <param name="whereLambda"></param>
         /// <returns></returns>
-        Task<TSource> GetModelAsync(Expression<Func<TSource, bool>> whereLambda);
+        Task<TSource> GetModelAsync(Expression<Func<TSource, bool>> whereLambda, CancellationToken cancellationToken);
 
         /// <summary>
         /// 获取查询实体集合
         /// </summary>
         /// <param name="whereLambda"></param>
         /// <returns></returns>
-        Task<List<TSource>> GetListAsync(Expression<Func<TSource, bool>> whereLambda);
+        Task<List<TSource>> GetListAsync(Expression<Func<TSource, bool>> whereLambda, CancellationToken cancellationToken);
 
         /// <summary>
         /// 分页查询
@@ -59,7 +60,6 @@ namespace Trials.Kevin.IRepository
         /// <param name="whereLambda"></param>
         /// <param name="sortFields"></param>
         /// <returns></returns>
-        Task<Tuple<List<TSource>, int>> GetListPageAsync(int pageSize, int pageIndex, Expression<Func<TSource, bool>> whereLambda, Dictionary<string, string> sortFields);
-
+        Task<(List<TSource> entities, int totalCount)> GetListPageAsync(int pageSize, int pageIndex, Expression<Func<TSource, bool>> whereLambda, Dictionary<string, string> sortFields, CancellationToken cancellationToken);
     }
 }

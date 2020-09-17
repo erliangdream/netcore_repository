@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,10 +15,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Trials.Kevin.Common.Profile;
 using Trials.Kevin.Contract.IOC;
 using Trials.Kevin.Model;
 
-namespace Trials.Kevin.SaleOrder.New
+namespace Trials.Kevin.SaleOrder.New.Host
 {
     public class Startup
     {
@@ -36,6 +38,9 @@ namespace Trials.Kevin.SaleOrder.New
             services.AddDbContext<SaleOrderContext>(options => options.UseMySQL(Configuration["DbConnectionStrings:MySqlMesOrder"]));
 
             services.AddUserService();
+
+            //automapper
+            services.AddAutoMapper(typeof(SaleOrderProfile));
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

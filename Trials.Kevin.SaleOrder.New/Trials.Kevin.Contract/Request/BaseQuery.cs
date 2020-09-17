@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Trials.Kevin.Contract.Request
 {
-    public class BaseQueryRequest
+    public class BaseQuery
     {
         public int PageSize => 10;
 

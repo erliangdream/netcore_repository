@@ -26,21 +26,8 @@ namespace Trials.Kevin.Contract.Response
     /// Data响应
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class BaseResponse<T>
+    public class BaseResponse<T>: BaseResponse
     {
-        public bool IsSuccess { get; set; }
-
-        public int Code { get; set; }
-
-        public string Message { get; set; }
-
         public T Data { get; set; }
-
-        public BaseResponse()
-        {
-            IsSuccess = true;
-            Code = 200;
-            Message = "Success";
-        }
     }
 }
