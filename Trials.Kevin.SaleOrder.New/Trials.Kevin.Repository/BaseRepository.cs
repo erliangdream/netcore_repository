@@ -120,12 +120,12 @@ namespace Trials.Kevin.Repository
 
             _dbContext.Set<TSource>().Attach(sourceModel);
 
-            var ee = (entity.Body as MemberInitExpression).Bindings;
+            var initBings = (entity.Body as MemberInitExpression).Bindings;
 
             //获取表达式对象
             var lambdaResultObj = entity.Compile()(sourceModel);
 
-            foreach (var item in ee)
+            foreach (var item in initBings)
             {
                 //var bb = ((item as MemberAssignment).Expression as ConstantExpression).Value;
                 //获取修改的属性名

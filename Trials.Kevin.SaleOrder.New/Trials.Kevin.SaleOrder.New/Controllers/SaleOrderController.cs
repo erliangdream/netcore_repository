@@ -21,23 +21,17 @@ namespace Trials.Kevin.SaleOrder.New.Host.Controllers
     public class SaleOrderController : ApiControllerBase
     {
         private readonly ILogger<SaleOrderController> _logger;
-        private readonly IMapper _mapper;
         private readonly UserModel _userModel;
         private readonly ISaleOrderService _saleOrderService;
-        private readonly ISaleOrderDetailService _saleOrderDetailService;
 
         public SaleOrderController(ILogger<SaleOrderController> logger,
-            IMapper mapper,
             UserModel userModel,
-            ISaleOrderService saleOrderService,
-            ISaleOrderDetailService saleOrderDetailService
+            ISaleOrderService saleOrderService
             )
         {
             _logger = logger;
-            _mapper = mapper;
             _userModel = userModel;
             _saleOrderService = saleOrderService;
-            _saleOrderDetailService = saleOrderDetailService;
         }
 
         [HttpPost]

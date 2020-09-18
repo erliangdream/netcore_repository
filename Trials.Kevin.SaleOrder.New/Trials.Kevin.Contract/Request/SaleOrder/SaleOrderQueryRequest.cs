@@ -56,9 +56,5 @@ namespace Trials.Kevin.Contract.Request.SaleOrder
         /// </summary>
         public int[] Status { get; set; }
 
-        /// <summary>
-        /// 排序字段
-        /// </summary>
-        public Dictionary<string, string> SortFields { get; set; } = new Dictionary<string, string> { { "CreateTime", "desc" } };
     }
 }

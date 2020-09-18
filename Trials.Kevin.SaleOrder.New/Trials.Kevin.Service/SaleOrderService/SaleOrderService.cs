@@ -116,18 +116,12 @@ namespace Trials.Kevin.Service.SaleOrderService
                 return new BaseResponse() { Code = (int)HttpStatusCode.NoContent, IsSuccess = false, Message = "数据不存在" };
             }
 
-            //int executeCount = await _repository.UpdateAsync(p => p.Id == dto.Id, p => new SaleOrderEntity
-            //{
-            //    Status = dto.Status,
-            //    Remark = dto.Remark,
-            //    SignDate = dto.SignDate
-            //}, cancellationToken);
-
             var result = await _repository.UpdateAsync(p => p.Id == dto.Id, p => new SaleOrderEntity
             {
                 Status = dto.Status,
                 Remark = dto.Remark,
-                SignDate = dto.SignDate
+                SignDate = dto.SignDate,
+                Customer = dto.Customer
             }, cancellationToken);
             if (result != null)
             {
