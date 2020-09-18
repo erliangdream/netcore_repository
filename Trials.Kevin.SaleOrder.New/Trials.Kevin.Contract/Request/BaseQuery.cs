@@ -6,9 +6,9 @@ namespace Trials.Kevin.Contract.Request
 {
     public class BaseQuery
     {
-        public int PageSize => 10;
+        public int PageSize { get; set; } = 10;
 
-        public int PageIndex => 1;
+        public int PageIndex { get; set; } = 1;
 
         /// <summary>
         /// 排序字段

@@ -79,14 +79,14 @@ namespace Trials.Kevin.SaleOrder.New.Host.Controllers
         public async Task<IActionResult> Get([FromBody] SaleOrderDetailQueryRequest request, CancellationToken cancellationToken)
         {
             SaleOrderDetailQueryDto response = await _saleOrderDetailService.GetEntitiesAsync(request, cancellationToken);
-            return await Task.FromResult(Ok(response));
+            return await Task.FromResult(Ok(new BaseResponse<SaleOrderDetailQueryDto> { Data = response }));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(long id, CancellationToken cancellationToken)
         {
             SaleOrderDetailDto response = await _saleOrderDetailService.GetModelAsync(id, cancellationToken);
-            return await Task.FromResult(Ok(response));
+            return await Task.FromResult(Ok(new BaseResponse<SaleOrderDetailDto> { Data = response }));
         }
     }
 }

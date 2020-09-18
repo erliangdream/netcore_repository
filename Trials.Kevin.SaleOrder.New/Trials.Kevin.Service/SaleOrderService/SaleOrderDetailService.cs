@@ -134,7 +134,7 @@ namespace Trials.Kevin.Service.SaleOrderService
                 SortNo = dto.SortNo,
                 Unit = dto.Unit
             }, cancellationToken);
-            if (result != null)
+            if (result?.Count > 0)
             {
                 int executeCount = await _unitOfWork.SaveChangesAsync(cancellationToken);
             }

@@ -106,39 +106,46 @@ namespace Trials.Kevin.Repository
             return await _dbContext.Set<TSource>().AsNoTracking().FirstOrDefaultAsync(whereLambda, cancellationToken);
         }
 
-        public async Task<EntityEntry<TSource>> UpdateAsync(Expression<Func<TSource, bool>> whereLambda, Expression<Func<TSource, TSource>> entity, CancellationToken cancellationToken)
+        public async Task<List<EntityEntry<TSource>>> UpdateAsync(Expression<Func<TSource, bool>> whereLambda, Expression<Func<TSource, TSource>> entity, CancellationToken cancellationToken)
         {
             //int executeCount = await _dbContext.Set<TSource>().Where(whereLambda).UpdateAsync(entity, cancellationToken);
             //_dbContext.Set<TSource>().Where(whereLambda).UpdateFromQueryAsync
 
-            TSource sourceModel = await _dbContext.Set<TSource>().Where(whereLambda).FirstOrDefaultAsync();
+            List<TSource> sourceModels = await _dbContext.Set<TSource>().Where(whereLambda).ToListAsync();
 
-            if (sourceModel == null)
+
+
+            if (sourceModels == null || sourceModels.Count == 0)
             {
                 return null;
             }
 
-            _dbContext.Set<TSource>().Attach(sourceModel);
+            List<EntityEntry<TSource>> list = new List<EntityEntry<TSource>>();
 
-            var initBings = (entity.Body as MemberInitExpression).Bindings;
-
-            //获取表达式对象
-            var lambdaResultObj = entity.Compile()(sourceModel);
-
-            foreach (var item in initBings)
+            foreach (var sourceModel in sourceModels)
             {
-                //var bb = ((item as MemberAssignment).Expression as ConstantExpression).Value;
-                //获取修改的属性名
-                string propertyName = item.Member.Name;
+                _dbContext.Set<TSource>().Attach(sourceModel);
 
-                sourceModel.GetType().GetProperty(propertyName).SetValue(sourceModel,
-                    lambdaResultObj.GetType().GetProperty(propertyName).GetValue(lambdaResultObj));
+                var initBings = (entity.Body as MemberInitExpression).Bindings;
 
-                _dbContext.Entry(sourceModel).Property(propertyName).IsModified = true;
+                //获取表达式对象
+                var lambdaResultObj = entity.Compile()(sourceModel);
+
+                foreach (var item in initBings)
+                {
+                    //var bb = ((item as MemberAssignment).Expression as ConstantExpression).Value;
+                    //获取修改的属性名
+                    string propertyName = item.Member.Name;
+
+                    sourceModel.GetType().GetProperty(propertyName).SetValue(sourceModel,
+                        lambdaResultObj.GetType().GetProperty(propertyName).GetValue(lambdaResultObj));
+
+                    _dbContext.Entry(sourceModel).Property(propertyName).IsModified = true;
+                }
+                var result = _dbContext.Set<TSource>().Update(sourceModel);
+                list.Add(result);
             }
-            var result = _dbContext.Set<TSource>().Update(sourceModel);
-            return result;
-            //return executeCount;
+            return list;
         }
     }
 }

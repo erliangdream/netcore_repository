@@ -29,7 +29,7 @@ namespace Trials.Kevin.XUnitOfTest
 
                       services.AddAutofac();
 
-                      services.AddTransient<CancellationTokenSource>();
+                      services.AddScoped<CancellationTokenSource>();
                   })
             .UseStartup<Startup>();
             testServer = new TestServer(webHostBuilder);

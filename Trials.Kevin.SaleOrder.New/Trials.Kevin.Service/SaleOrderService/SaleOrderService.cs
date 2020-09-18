@@ -72,7 +72,7 @@ namespace Trials.Kevin.Service.SaleOrderService
             }
             await _repository.UpdateAsync(p => p.Id == id && p.Status == (int)SaleOrderStatusEnum.Pending, p => new SaleOrderEntity { IsDeleted = (int)LogicDeleteEnum.Yes }, cancellationToken);
             await _repositoryDetial.UpdateAsync(p => p.PId == id, p => new SaleOrderDetailEntity { IsDeleted = (int)LogicDeleteEnum.Yes }, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            int executeCount = await _unitOfWork.SaveChangesAsync(cancellationToken);
             return new BaseResponse();
         }
 
@@ -123,7 +123,7 @@ namespace Trials.Kevin.Service.SaleOrderService
                 SignDate = dto.SignDate,
                 Customer = dto.Customer
             }, cancellationToken);
-            if (result != null)
+            if (result?.Count > 0)
             {
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
             }
