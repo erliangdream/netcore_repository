@@ -4,4 +4,11 @@
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Trials.Kevin.IRepository\Trials.Kevin.IRepository.csproj" />
+    <ProjectReference Include="..\Trials.Kevin.IService\Trials.Kevin.IService.csproj" />
+    <ProjectReference Include="..\Trials.Kevin.Model\Trials.Kevin.Model.csproj" />
+    <ProjectReference Include="..\Trials.Kevin.Repository\Trials.Kevin.Repository.csproj" />
+  </ItemGroup>
+
 </Project>

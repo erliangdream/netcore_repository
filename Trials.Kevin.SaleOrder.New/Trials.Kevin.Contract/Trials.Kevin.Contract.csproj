@@ -9,8 +9,4 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Trials.Kevin.Model\Trials.Kevin.Model.csproj" />
-  </ItemGroup>
-
 </Project>
